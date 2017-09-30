@@ -7,56 +7,56 @@ class Calculator extends Component {
     this.state = {
       header: "My Calculator",
       displayNum:'0',
-      operator: '',
       tempNum: '',
-      numArr:[]
+      numArr:[],
+      clicked: false
     }
   }
 
   updateHeader(e) {
-    var value = e.target.value;
-
     this.setState({
-      header: value
+      header: e.target.value
     })
   }
 
 updateDisplay(number) {
-  if (this.state.displayNum === '0'){
-    this.setState({
-      displayNum:number
-    });
-  } else {
-    var newDisplay = this.state.displayNum + number
-    this.setState({
-      displayNum:newDisplay
-    });
+  var displayNumber;
+  if (this.state.clicked === false) {
+    this.state.clicked = true;
+    displayNumber = number;
+  }else {
+    displayNumber = this.state.displayNum + number;
   }
+  this.setState({
+    displayNum: displayNumber
+  });
 }
 
 updateClear(){
   this.setState({
     displayNum: '0',
-    numArr: []
-  })
+    numArr: [],
+    clicked: false
+  });
 }
 
 pushArr(arg){
-  this.state.numArr.push(+this.state.displayNum);
-  console.log(this.state.displayNum);
+  this.state.numArr.push(this.state.displayNum)
+  this.state.numArr.push(arg)
   this.setState({
-    displayNum: arg
+    displayNum: arg,
+    clicked:false
   })
-this.state.numArr.push(arg);
 }
 
 updateExec(){
-  this.state.numArr.push(+this.state.displayNum);
-var exe = this.state.numArr.reduce( function (sum, value) {
-  return sum + value
-});
+  this.state.numArr.push(this.state.displayNum);
+  var exe = this.state.numArr.join('');
+  console.log(eval(exe));
   this.setState({
-    displayNum:exe + ""
+    displayNum: eval(exe),
+    clicked:false,
+    numArr: [],
   });
 }
 
